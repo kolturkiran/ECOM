@@ -46,6 +46,10 @@ if(Session::has('user')){
               Login
             </a>
           </li>
+          <li><a class="dropdown-item" href="/register">
+              Register
+            </a>
+          </li>
           @endif
         </ul>
       </div><!-- /.navbar-collapse -->
