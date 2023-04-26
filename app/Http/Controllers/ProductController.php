@@ -22,8 +22,11 @@ class ProductController extends Controller
         return view('search',['products'=>$data]);
     }
     public function detail($id){
-        $data=Product::find($id); 
-        return view('detail', ['product'=>$data]);
+        $data=Product::find($id);        
+         $products=Product::
+         where('id','<>', $data->id)        
+         ->get(); 
+        return view('detail', ['product'=>$data, 'products' => $products]);
     }
     public function addToCart(Request $req){              
         if($req->session()->has('user')){
@@ -41,14 +44,19 @@ class ProductController extends Controller
             $userId = Session::get('user')['id'];        
             return Cart::where('user_id', $userId)->count();             
     }
-    public function cartList(){
-        $userId = Session::get('user')['id'];
-        $products=DB::table('cart')
-        ->join('products', 'cart.product_id', '=', 'products.id')
-        ->where('cart.user_id', $userId)
-        ->select('products.*', 'cart.id as cart_id')
-        ->get();
-        return view('cartlist', ['products'=>$products]);
+    public function cartList(){        
+        if(isset(Session::get('user')['id'])){
+            $userId = Session::get('user')['id'];
+            $products=DB::table('cart')
+            ->join('products', 'cart.product_id', '=', 'products.id')
+            ->where('cart.user_id', $userId)
+            ->select('products.*', 'cart.id as cart_id')
+            ->get();
+            return view('cartlist', ['products'=>$products]);
+        }else{
+            return redirect('/login');
+        }
+        
     }
     function removeCart($id)
     {
@@ -90,17 +98,27 @@ class ProductController extends Controller
         return redirect('myorders');        
     }
     public function myOrders(){
+        if(isset(Session::get('user')['id'])){
         $userId = Session::get('user')['id'];
         $orders = DB::table('orders')
         ->join('products', 'orders.product_id', '=', 'products.id')
         ->where('orders.user_id', $userId)
         ->get();        
         return view('myorders', ['orders'=>$orders]);
+        }
+        else{
+            return redirect('/login');
+        }
     }
-    public function buyNow(Request $req){              
+    public function buyNow(Request $req){
+        if(isset(Session::get('user')['id'])){              
         $total = DB::table('products')        
         ->where('products.id', $req->product_id)
         ->value('products.price');        
         return view('ordernow', ['total'=>$total, 'product_id'=>$req->product_id]);
+    }
+        else{
+            return redirect('/login');
+        }
     }   
 }

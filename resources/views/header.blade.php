@@ -15,14 +15,13 @@ if(Session::has('user')){
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">E-Comm</a>
+        <a class="navbar-brand" href="/"><b>omnify</b></a>
       </div>
   
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="/myorders">Orders</a></li>
+          <li class="active"><a href="/">Home</a></li>          
         </ul>
         <form action="/search" class="navbar-form navbar-left">
           <div class="form-group">
@@ -31,7 +30,7 @@ if(Session::has('user')){
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/cartlist">cart({{$total}})</a></li>
+          <li><a href="/cartlist">Favorite({{$total}})</a></li>
           @if(Session::has('user'))  
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
